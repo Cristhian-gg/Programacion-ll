@@ -55,12 +55,10 @@ def graficar(p1, p2, linea, circulo):
     circle = plt.Circle((circulo.centro.x, circulo.centro.y), circulo.radio, color='b', fill=False, label="Círculo")
     ax.add_patch(circle)
     
-    # Etiquetas
     ax.text(p1.x, p1.y, "P1", fontsize=12, verticalalignment='bottom', horizontalalignment='right')
     ax.text(p2.x, p2.y, "P2", fontsize=12, verticalalignment='bottom', horizontalalignment='left')
     ax.text(circulo.centro.x, circulo.centro.y, "Centro", fontsize=12, verticalalignment='top', horizontalalignment='left')
     
-    # Configuración de ejes
     ax.set_xlim(min(p1.x, p2.x, circulo.centro.x - circulo.radio) - 2, max(p1.x, p2.x, circulo.centro.x + circulo.radio) + 2)
     ax.set_ylim(min(p1.y, p2.y, circulo.centro.y - circulo.radio) - 2, max(p1.y, p2.y, circulo.centro.y + circulo.radio) + 2)
     ax.set_aspect('equal')
@@ -68,7 +66,6 @@ def graficar(p1, p2, linea, circulo):
     ax.legend()
     plt.show()
 
-# Ejemplo de uso
 p1 = Punto(0, 3)
 p2 = Punto(4, 0)
 linea = Linea(p1, p2)
