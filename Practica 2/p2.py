@@ -1,4 +1,6 @@
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Punto:
     def __init__(self, x, y):
@@ -41,14 +43,35 @@ class Circulo:
     def __str__(self):
         return "Circulo con centro en {} y radio {:.2f}".format(self.centro, self.radio)
 
-# Ejemplo de uso:
+# Función para graficar
+
+def graficar(p1, p2, linea, circulo):
+    fig, ax = plt.subplots()
+    
+    # Graficar línea
+    ax.plot([p1.x, p2.x], [p1.y, p2.y], 'ro-', label="Línea")
+    
+    # Graficar círculo
+    circle = plt.Circle((circulo.centro.x, circulo.centro.y), circulo.radio, color='b', fill=False, label="Círculo")
+    ax.add_patch(circle)
+    
+    # Etiquetas
+    ax.text(p1.x, p1.y, "P1", fontsize=12, verticalalignment='bottom', horizontalalignment='right')
+    ax.text(p2.x, p2.y, "P2", fontsize=12, verticalalignment='bottom', horizontalalignment='left')
+    ax.text(circulo.centro.x, circulo.centro.y, "Centro", fontsize=12, verticalalignment='top', horizontalalignment='left')
+    
+    # Configuración de ejes
+    ax.set_xlim(min(p1.x, p2.x, circulo.centro.x - circulo.radio) - 2, max(p1.x, p2.x, circulo.centro.x + circulo.radio) + 2)
+    ax.set_ylim(min(p1.y, p2.y, circulo.centro.y - circulo.radio) - 2, max(p1.y, p2.y, circulo.centro.y + circulo.radio) + 2)
+    ax.set_aspect('equal')
+    ax.grid(True)
+    ax.legend()
+    plt.show()
+
+# Ejemplo de uso
 p1 = Punto(0, 3)
 p2 = Punto(4, 0)
 linea = Linea(p1, p2)
 circulo = Circulo(p1, 5)
 
-print(linea)
-print("Longitud de la línea:", linea.longitud())
-print(circulo)
-print("Área del círculo:", circulo.area())
-print("Perímetro del círculo:", circulo.perimetro())
+graficar(p1, p2, linea, circulo)
