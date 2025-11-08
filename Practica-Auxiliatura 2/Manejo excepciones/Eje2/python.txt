@@ -1,0 +1,56 @@
+class NumeroInvalidoException(Exception):
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+
+
+class Calculadora:
+
+    @staticmethod
+    def sumar(a, b):
+        return a + b
+
+    @staticmethod
+    def restar(a, b):
+        return a - b
+
+    @staticmethod
+    def multiplicar(a, b):
+        return a * b
+
+    @staticmethod
+    def dividir(a, b):
+        if b == 0:
+            raise ZeroDivisionError("Error: división entre cero no permitida.")
+        return a / b
+
+    @staticmethod
+    def convertir_a_entero(valor):
+        try:
+            return int(valor)
+        except ValueError:
+            raise NumeroInvalidoException(f"Error: '{valor}' no es un número válido.")
+
+
+def main():
+    try:
+        a = Calculadora.convertir_a_entero("10")
+        b = Calculadora.convertir_a_entero("5")
+        c = Calculadora.convertir_a_entero("abc")  # Esto lanzará excepción
+
+        print("Suma:", Calculadora.sumar(a, b))
+        print("Resta:", Calculadora.restar(a, b))
+        print("Multiplicación:", Calculadora.multiplicar(a, b))
+        print("División:", Calculadora.dividir(a, b))
+
+    except NumeroInvalidoException as e:
+        print(e)
+
+    try:
+        print("División entre cero:", Calculadora.dividir(10, 0))
+    except ZeroDivisionError as e:
+        print(e)
+
+
+if __name__ == "__main__":
+    main()
+

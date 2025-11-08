@@ -1,0 +1,102 @@
+class Ropa:
+    def __init__(self, tipo, material):
+        self.tipo = tipo
+        self.material = material
+
+    def get_tipo(self):
+        return self.tipo
+
+    def get_material(self):
+        return self.material
+
+    def mostrar_info(self):
+        print(f"Tipo: {self.tipo} | Material: {self.material}")
+
+
+class Ropero:
+    def __init__(self, material):
+        self.material = material
+        self.ropas = []
+        self.nro_ropas = 0
+
+    def adicionar_ropa(self, r):
+        if self.nro_ropas < 20:
+            self.ropas.append(r)
+            self.nro_ropas += 1
+        else:
+            print("El ropero está lleno.")
+
+    def eliminar_por_material(self, material):
+        i = 0
+        while i < self.nro_ropas:
+            if self.ropas[i].get_material().lower() == material.lower():
+                self.eliminar_en_posicion(i)
+            else:
+                i += 1
+
+    def eliminar_por_tipo(self, tipo):
+        i = 0
+        while i < self.nro_ropas:
+            if self.ropas[i].get_tipo().lower() == tipo.lower():
+                self.eliminar_en_posicion(i)
+            else:
+                i += 1
+
+    def eliminar_en_posicion(self, index):
+        self.ropas.pop(index)
+        self.nro_ropas -= 1
+
+    def mostrar_por_material(self, material):
+        print(f"Prendas de material: {material}")
+        for r in self.ropas:
+            if r.get_material().lower() == material.lower():
+                r.mostrar_info()
+        print("---------------------------------")
+
+    def mostrar_por_tipo(self, tipo):
+        print(f"Prendas de tipo: {tipo}")
+        for r in self.ropas:
+            if r.get_tipo().lower() == tipo.lower():
+                r.mostrar_info()
+        print("---------------------------------")
+
+    def mostrar_todas(self):
+        print(f"Ropero de material: {self.material}")
+        if self.nro_ropas == 0:
+            print("  (No hay prendas)")
+        for r in self.ropas:
+            r.mostrar_info()
+        print("---------------------------------")
+
+
+def main():
+    ropero = Ropero("Madera")
+    n = int(input("¿Cuántas prendas deseas agregar?: "))
+
+    for _ in range(n):
+        tipo = input("Tipo de ropa: ")
+        material = input("Material: ")
+        ropero.adicionar_ropa(Ropa(tipo, material))
+
+    print("\n=== Prendas actuales ===")
+    ropero.mostrar_todas()
+
+    mat_eliminar = input("\nEliminar prendas de material: ")
+    ropero.eliminar_por_material(mat_eliminar)
+
+    tipo_eliminar = input("Eliminar prendas de tipo: ")
+    ropero.eliminar_por_tipo(tipo_eliminar)
+
+    mat_mostrar = input("\nMostrar prendas de material: ")
+    ropero.mostrar_por_material(mat_mostrar)
+
+    tipo_mostrar = input("Mostrar prendas de tipo: ")
+    ropero.mostrar_por_tipo(tipo_mostrar)
+
+    print("\n=== Estado final del ropero ===")
+    ropero.mostrar_todas()
+
+
+if __name__ == "__main__":
+    main()
+

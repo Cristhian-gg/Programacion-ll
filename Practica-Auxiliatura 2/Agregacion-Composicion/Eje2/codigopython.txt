@@ -1,0 +1,87 @@
+class Empleado:
+    def __init__(self, nombre, cargo, sueldo):
+        self.nombre = nombre
+        self.cargo = cargo
+        self.sueldo = sueldo
+
+    def get_nombre(self):
+        return self.nombre
+
+    def get_sueldo(self):
+        return self.sueldo
+
+    def set_sueldo(self, sueldo):
+        self.sueldo = sueldo
+
+    def mostrar_info(self):
+        print(f"Nombre: {self.nombre} | Cargo: {self.cargo} | Sueldo: {self.sueldo}")
+from empleado import Empleado
+
+class Departamento:
+    def __init__(self, nombre, area):
+        self.nombre = nombre
+        self.area = area
+        self.empleados = []
+
+    def agregar_empleado(self, empleado):
+        self.empleados.append(empleado)
+
+    def mostrar_empleados(self):
+        print(f"Departamento: {self.nombre} ({self.area})")
+        if not self.empleados:
+            print("  No hay empleados.")
+        else:
+            for e in self.empleados:
+                e.mostrar_info()
+        print("-----------------------------------")
+
+    def cambio_salario(self, nuevo_sueldo):
+        for e in self.empleados:
+            e.set_sueldo(nuevo_sueldo)
+
+    def get_empleados(self):
+        return self.empleados
+
+    def get_nombre(self):
+        return self.nombre
+from departamento import Departamento
+from empleado import Empleado
+
+def main():
+    d1 = Departamento("Informatica", "Sistemas")
+    d2 = Departamento("Contabilidad", "Finanzas")
+
+    d1.agregar_empleado(Empleado("Ana", "Analista", 4000))
+    d1.agregar_empleado(Empleado("Luis", "Programador", 3500))
+    d1.agregar_empleado(Empleado("Maria", "Tester", 3000))
+    d1.agregar_empleado(Empleado("Jose", "Administrador", 4200))
+    d1.agregar_empleado(Empleado("Sofia", "Diseñadora", 3700))
+
+    print("=== Empleados iniciales ===")
+    d1.mostrar_empleados()
+    d2.mostrar_empleados()
+
+    print("=== Cambio de salario en Departamento 1 ===")
+    d1.cambio_salario(4500)
+    d1.mostrar_empleados()
+
+    existe = False
+    for e1 in d1.get_empleados():
+        for e2 in d2.get_empleados():
+            if e1.get_nombre() == e2.get_nombre():
+                existe = True
+
+    print(f"¿Algún empleado del d1 pertenece también al d2?: {existe}")
+
+    print("=== Moviendo empleados del Departamento 1 al 2 ===")
+    d2.get_empleados().extend(d1.get_empleados())
+    d1.get_empleados().clear()
+
+    print("=== Estado final de los departamentos ===")
+    d1.mostrar_empleados()
+    d2.mostrar_empleados()
+
+
+if __name__ == "__main__":
+    main()
+

@@ -1,0 +1,109 @@
+class ProductoExistenteException(Exception):
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+
+
+class ProductoNoEncontradoException(Exception):
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+
+
+class StockInsuficienteException(Exception):
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+
+
+class Producto:
+    def __init__(self, codigo, nombre, precio, stock):
+        self.codigo = codigo
+        self.nombre = nombre
+        self.precio = precio
+        self.stock = stock
+
+    def get_codigo(self):
+        return self.codigo
+
+    def get_nombre(self):
+        return self.nombre
+
+    def get_precio(self):
+        return self.precio
+
+    def get_stock(self):
+        return self.stock
+
+    def set_stock(self, stock):
+        self.stock = stock
+
+    def __str__(self):
+        return f"[{self.codigo}] {self.nombre} - Precio: {self.precio} Bs - Stock: {self.stock}"
+
+
+class Inventario:
+    def __init__(self, capacidad):
+        self.productos = []
+        self.capacidad = capacidad
+
+    def agregar_producto(self, p):
+        if p.get_precio() < 0 or p.get_stock() < 0:
+            raise ProductoExistenteException("Error: precio o stock no pueden ser negativos.")
+
+        for prod in self.productos:
+            if prod.get_codigo().lower() == p.get_codigo().lower():
+                raise ProductoExistenteException(f"Error: el producto con código {p.get_codigo()} ya existe.")
+
+        if len(self.productos) < self.capacidad:
+            self.productos.append(p)
+        else:
+            print("Inventario lleno, no se puede agregar más productos.")
+
+    def buscar_producto(self, codigo):
+        for prod in self.productos:
+            if prod.get_codigo().lower() == codigo.lower():
+                return prod
+        raise ProductoNoEncontradoException(f"Producto con código {codigo} no encontrado.")
+
+    def vender_producto(self, codigo, cantidad):
+        prod = self.buscar_producto(codigo)
+        if prod.get_stock() < cantidad:
+            raise StockInsuficienteException(f"Stock insuficiente para vender {cantidad} unidades.")
+        prod.set_stock(prod.get_stock() - cantidad)
+        print(f"Venta realizada: {cantidad} unidades de {prod.get_nombre()}")
+
+    def mostrar_inventario(self):
+        print("=== Inventario Actual ===")
+        if not self.productos:
+            print("No hay productos en el inventario.")
+        for prod in self.productos:
+            print(prod)
+
+
+def main():
+    inv = Inventario(5)
+
+    try:
+        inv.agregar_producto(Producto("P001", "Laptop", 4500, 10))
+        inv.agregar_producto(Producto("P002", "Mouse", 120, 25))
+        inv.agregar_producto(Producto("P001", "Monitor", 800, 5))  # Esto lanzará excepción
+    except ProductoExistenteException as e:
+        print(e)
+
+    inv.mostrar_inventario()
+
+    try:
+        inv.vender_producto("P002", 5)
+        inv.vender_producto("P003", 1)  # Esto lanzará excepción
+    except (ProductoNoEncontradoException, StockInsuficienteException) as e:
+        print(e)
+
+    try:
+        inv.vender_producto("P001", 20)  # Esto lanzará excepción por stock insuficiente
+    except (ProductoNoEncontradoException, StockInsuficienteException) as e:
+        print(e)
+
+    inv.mostrar_inventario()
+
+
+if __name__ == "__main__":
+    main()
+
